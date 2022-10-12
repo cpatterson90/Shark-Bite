@@ -21,7 +21,10 @@ def webcam():
 
         # apply classifier?
         teeth = toothCascade.detectMultiScale(frame)
-
+        detection_result, rejectLevels, levelWeights= toothCascade.detectMultiScale3(frame,outputRejectLevels=1)
+        print(rejectLevels)
+        print(levelWeights)
+        print(detection_result)
         # Draw a rectangle around the teeth
         for (x, y, w, h) in teeth:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -66,8 +69,32 @@ def screen():
             cv2.destroyAllWindows()
             break
 
+def test_image():
+    image_path = "test_image.jpg"
+    window_name = f"Detected Objects in {image_path}"
+    original_image = cv2.imread(image_path)
+
+    # Convert the image to grayscale for easier computation
+    image_grey = cv2.cvtColor(original_image, cv2.COLOR_RGB2GRAY)
+
+    cascade_classifier = cv2.CascadeClassifier("cascade//cascade.xml")
+    detected_objects = cascade_classifier.detectMultiScale(image_grey)
+
+    # Draw rectangles on the detected objects
+    if len(detected_objects) != 0:
+        for (x, y, width, height) in detected_objects:
+            cv2.rectangle(original_image, (x, y),
+                          (x + height, y + width),
+                          (0, 255, 0), 2)
+
+    cv2.namedWindow(window_name, cv2.WINDOW_KEEPRATIO)
+    cv2.imshow(window_name, original_image)
+    cv2.resizeWindow(window_name, 400, 400)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    webcam()
+    #webcam()
+    test_image()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
