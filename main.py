@@ -17,17 +17,24 @@ def webcam():
         ret, frame = cap.read()
         frame = cv2.resize(frame, None, fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
 
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
         # apply classifier?
         teeth = toothCascade.detectMultiScale(frame)
         detection_result, rejectLevels, levelWeights= toothCascade.detectMultiScale3(frame,outputRejectLevels=1)
-        print(rejectLevels)
-        print(levelWeights)
-        print(detection_result)
+        print(f"reject Levels: {rejectLevels}")
+        print(f"levelweights: {levelWeights}")
+        print(f"detection results: {detection_result}")
         # Draw a rectangle around the teeth
-        for (x, y, w, h) in teeth:
-            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        #for (x, y, w, h) in teeth:
+        #    cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        #    cv2.putText(frame, "test", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, .8, (0, 255, 0), 2)
+
+        i = 0
+        for (x, y, w, h) in detection_result:
+            if abs(levelWeights[i]) > .7:
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+                font = cv2.FONT_HERSHEY_SIMPLEX
+                cv2.putText(frame, str(levelWeights[i]), (x, y), font, 0.5, (255, 255, 255), 1)
+            i = i + 1
 
         cv2.imshow('Input', frame)
 
@@ -71,21 +78,34 @@ def screen():
 
 def test_image():
     image_path = "test_image.jpg"
+    #image_path = "positive/SharkTooth_1.png"
     window_name = f"Detected Objects in {image_path}"
     original_image = cv2.imread(image_path)
 
-    # Convert the image to grayscale for easier computation
-    image_grey = cv2.cvtColor(original_image, cv2.COLOR_RGB2GRAY)
+    frame = cv2.resize(original_image, (0, 0), fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
 
+    # apply classifier?
     cascade_classifier = cv2.CascadeClassifier("cascade//cascade.xml")
-    detected_objects = cascade_classifier.detectMultiScale(image_grey)
+    teeth = cascade_classifier.detectMultiScale(frame)
+    detection_result, rejectLevels, levelWeights = cascade_classifier.detectMultiScale3(frame, outputRejectLevels=1)
+    print(f"reject Levels: {rejectLevels}")
+    print(f"levelweights: {levelWeights}")
+    print(f"detection results: {detection_result}")
 
-    # Draw rectangles on the detected objects
-    if len(detected_objects) != 0:
-        for (x, y, width, height) in detected_objects:
-            cv2.rectangle(original_image, (x, y),
-                          (x + height, y + width),
-                          (0, 255, 0), 2)
+    # Draw a rectangle around the teeth
+    for (x, y, w, h) in teeth:
+        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.putText(frame,"test", (x,y-10),cv2.FONT_HERSHEY_SIMPLEX, .8,(0,255,0),2)
+
+    #i = 0
+    #font = cv2.FONT_ITALIC
+    #for (x, y, w, h) in detection_result:
+        #cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 255), 2)
+        #font = cv2.FONT_HERSHEY_SIMPLEX
+        #cv2.putText(frame, str(levelWeights[i][0]), (x, y), font, 0.5, (255, 255, 255), 2, cv2.LINE_AA)
+        #i = i + 1
+
+    cv2.imshow('Input', frame)
 
     cv2.namedWindow(window_name, cv2.WINDOW_KEEPRATIO)
     cv2.imshow(window_name, original_image)
@@ -95,6 +115,6 @@ def test_image():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    #webcam()
+    webcam()
     test_image()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
