@@ -78,7 +78,7 @@ def screen():
 
 def test_image():
     image_path = "test_image.jpg"
-    #image_path = "positive/SharkTooth_1.png"
+    image_path = "positive/SharkTooth_1.png"
     window_name = f"Detected Objects in {image_path}"
     original_image = cv2.imread(image_path)
 
@@ -116,5 +116,5 @@ def test_image():
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     webcam()
-    test_image()
+    #test_image()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
