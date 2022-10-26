@@ -52,3 +52,33 @@ window.addEventListener('DOMContentLoaded', event => {
     });
 
 });
+
+//Hand the submit button for uploading a image
+$("#photoUpload").on("click", function(){
+     // clear any old form validation
+     $(".needs-validation").removeClass('was-validated')
+     $(".needs-validation").text("")
+     let formData = new FormData();
+     formData.append("photo", $('#photo').prop('files')[0]);
+     $.ajax({
+        url: "api/process_image",
+        processData: false, // important
+        contentType: false, // important
+        method: "post",
+        data: formData,
+        success: function(result){
+            if (result.status != "error"){
+                console.log(result)
+                // update the #detected_photo with the new image
+                $("#detect_photo").attr("src", "data:image/jpg;base64,"+result.img);
+            }
+            else {
+                $(".needs-validation").text(result.reason)
+                $(".needs-validation").addClass('was-validated')
+            }
+        },
+        error: function(e){
+            console.log(e);
+        }
+     });
+})

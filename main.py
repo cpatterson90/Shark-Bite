@@ -81,8 +81,10 @@ def test_image():
     image_path = "positive/SharkTooth_1.png"
     window_name = f"Detected Objects in {image_path}"
     original_image = cv2.imread(image_path)
+    print(original_image)
 
     frame = cv2.resize(original_image, (0, 0), fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+    print(frame)
 
     # apply classifier?
     cascade_classifier = cv2.CascadeClassifier("cascade//cascade.xml")
@@ -115,6 +117,6 @@ def test_image():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    webcam()
-    #test_image()
+    #webcam()
+    test_image()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
