@@ -118,6 +118,6 @@ def test_image():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    #webcam()
-    test_image()
+    webcam()
+    #test_image()
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
