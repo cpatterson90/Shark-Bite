@@ -3,6 +3,7 @@ import cv2
 from mss import mss
 from PIL import Image
 
+
 def webcam():
 
     cap = cv2.VideoCapture(0)
