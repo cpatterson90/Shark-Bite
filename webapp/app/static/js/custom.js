@@ -71,6 +71,11 @@ $("#photoUpload").on("click", function(){
                 console.log(result)
                 // update the #detected_photo with the new image
                 $("#detect_photo").attr("src", "data:image/jpg;base64,"+result.img);
+                if (result.objectsDetected != 0){
+                    $("#detect_details").html('There where <span class="badge bg-success">'+ result.objectsDetected +'</span> objects detected.')
+                } else {
+                    $("#detect_details").html('There where <span class="badge bg-danger">'+ result.objectsDetected +'</span> objects detected.')
+                }
             }
             else {
                 $(".needs-validation").text(result.reason)
