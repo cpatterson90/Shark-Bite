@@ -84,6 +84,12 @@ $("#photoUpload").on("click", function(){
         },
         error: function(e){
             console.log(e);
+            if (e.status == 413){
+                //request was too large
+                console.log("too big of file")
+                $(".needs-validation").text("File was too large, limit 1MB")
+                $(".needs-validation").addClass('was-validated')
+            }
         }
      });
 })

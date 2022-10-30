@@ -45,7 +45,7 @@ def hello():
 
 @app.post("/api/process_image")
 def process_image():
-    photo = request.files
+    photo = request.files['photo']
     #print(photo)
     if photo:
         if allowed_file(photo.filename):
