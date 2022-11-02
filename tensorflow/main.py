@@ -5,7 +5,7 @@ import tensorflow as tf
 import pandas as pd
 
 # Carregar modelos
-detector = hub.load("https://tfhub.dev/tensorflow/efficientdet/lite2/detection/1")
+detector = hub.load("efficientdet_lite2_detection_1")
 labels = pd.read_csv('labels.csv', sep=';', index_col='ID')
 labels = labels['OBJECT (2017 REL.)']
 
@@ -37,8 +37,8 @@ while (True):
     pred_labels = [labels[i] for i in pred_labels]
     pred_boxes = boxes.numpy()[0].astype('int')
     pred_scores = scores.numpy()[0]
+    # loop throughout the faces detected and place a box around it
 
-    # loop throughout the detections and place a box around it
     for score, (ymin, xmin, ymax, xmax), label in zip(pred_scores, pred_boxes, pred_labels):
         if score < 0.5:
             continue
@@ -50,7 +50,7 @@ while (True):
         cv2.putText(img_boxes, score_txt, (xmax, ymax - 10), font, 0.5, (255, 0, 0), 1, cv2.LINE_AA)
 
     # Display the resulting frame
-    cv2.imshow('black and white', img_boxes)
+    cv2.imshow('Result', img_boxes)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
