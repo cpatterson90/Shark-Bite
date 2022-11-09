@@ -60,6 +60,7 @@ $("#photoUpload").on("click", function(){
      $(".needs-validation").text("")
      let formData = new FormData();
      formData.append("photo", $('#photo').prop('files')[0]);
+     formData.append("od_type", $("input[name ='od_type']:checked").val())
      $.ajax({
         url: "api/process_image",
         processData: false, // important
