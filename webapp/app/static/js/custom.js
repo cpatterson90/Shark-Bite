@@ -58,6 +58,8 @@ $("#photoUpload").on("click", function(){
      // clear any old form validation
      $(".needs-validation").removeClass('was-validated')
      $(".needs-validation").text("")
+     //set loader
+     $("#loader").show()
      let formData = new FormData();
      formData.append("photo", $('#photo').prop('files')[0]);
      formData.append("od_type", $("input[name ='od_type']:checked").val())
@@ -82,6 +84,8 @@ $("#photoUpload").on("click", function(){
                 $(".needs-validation").text(result.reason)
                 $(".needs-validation").addClass('was-validated')
             }
+            $("#loader").hide()
+
         },
         error: function(e){
             console.log(e);
@@ -90,6 +94,8 @@ $("#photoUpload").on("click", function(){
                 console.log("too big of file")
                 $(".needs-validation").text("File was too large, limit 1MB")
                 $(".needs-validation").addClass('was-validated')
+                $("#loader").hide()
+
             }
         }
      });

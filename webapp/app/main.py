@@ -83,11 +83,12 @@ def hello():
 
 @app.post("/api/process_image")
 def process_image():
-    photo = request.files['photo']
+    photo = request.files
     od_type = request.form["od_type"]
-    print(od_type)
+    #print(od_type)
     #print(photo)
-    if photo:
+    if "photo" in photo.keys():
+        photo = photo['photo']
         if allowed_file(photo.filename):
             # read image file string data
             filestr = request.files['photo']
